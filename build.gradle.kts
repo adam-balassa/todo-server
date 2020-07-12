@@ -1,3 +1,4 @@
+import org.gradle.api.tasks.testing.logging.*
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.ir.backend.js.compile
 
@@ -57,9 +58,12 @@ dependencies {
 //	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 //	testImplementation("org.junit.jupiter:junit-jupiter-engine:5.3.2")
 }
-
-tasks.withType<Test> {
+tasks.test {
 	useJUnitPlatform()
+
+	testLogging {
+		exceptionFormat = TestExceptionFormat.FULL
+	}
 }
 
 tasks.withType<KotlinCompile> {
