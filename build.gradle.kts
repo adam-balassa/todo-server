@@ -1,6 +1,5 @@
 import org.gradle.api.tasks.testing.logging.*
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.jetbrains.kotlin.ir.backend.js.compile
 
 plugins {
 	id("org.springframework.boot") version "2.3.1.RELEASE"
