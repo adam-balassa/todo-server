@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Test
 import org.mockito.ArgumentCaptor
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.TestConfiguration
@@ -44,6 +45,7 @@ import javax.servlet.http.HttpServletRequest
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
+@AutoConfigureTestDatabase
 class TaskControllerUnitTest {
 
 	@Autowired
@@ -206,6 +208,7 @@ class TaskControllerUnitTest {
 			andExpect(jsonPath("$pathRoot.name", `is`(task.name)))
 			andExpect(jsonPath("$pathRoot.description", `is`(task.description)))
 			andExpect(jsonPath("$pathRoot.priority", `is`(task.priority.toString())))
+			println(task.startDate.toISOString())
 			andExpect(jsonPath("$pathRoot.startDate", `is`(task.startDate.toISOString())))
 			andExpect(jsonPath("$pathRoot.endDate", `is`(task.endDate.toISOString())))
 			andExpect(jsonPath("$pathRoot.owner.id", `is`(task.owner.id?.toInt())))
