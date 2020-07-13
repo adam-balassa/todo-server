@@ -1,13 +1,9 @@
 package hu.badam.todoserver
 
-import hu.badam.todoserver.model.Course
-import hu.badam.todoserver.model.Task
 import hu.badam.todoserver.model.User
 import hu.badam.todoserver.model.UserFriends
 import hu.badam.todoserver.repository.FriendRepository
-import hu.badam.todoserver.repository.TaskRepository
 import hu.badam.todoserver.repository.UserRepository
-import hu.badam.todoserver.service.TaskService
 import hu.badam.todoserver.service.UserFriendsService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -15,19 +11,15 @@ import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.context.annotation.Bean
 
 @SpringBootTest
+@AutoConfigureTestDatabase
 class FriendServiceUnitTest {
-    @TestConfiguration
-    internal class UserFriendsServiceImplTestContextConfiguration {
-        @Bean
-        fun userFriendsService(): UserFriendsService = UserFriendsService()
-    }
-
     @Autowired
     private lateinit var userFriendsService: UserFriendsService
 

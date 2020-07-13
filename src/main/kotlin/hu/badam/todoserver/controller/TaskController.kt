@@ -18,10 +18,10 @@ import java.util.*
 @Controller
 class TaskController: ControllerBase() {
     @Autowired
-    lateinit var taskRepository: TaskRepository
+    private lateinit var taskRepository: TaskRepository
 
     @Autowired
-    lateinit var taskService: TaskService
+    private lateinit var taskService: TaskService
 
     @GetMapping("/tasks")
     @ResponseBody

@@ -24,12 +24,6 @@ import java.util.*
 @AutoConfigureTestDatabase
 class TaskServiceUnitTest {
 
-    @TestConfiguration
-    internal class TaskServiceImplTestContextConfiguration {
-        @Bean
-        fun taskService(): TaskService = TaskService()
-    }
-
     @Autowired
     private lateinit var taskService: TaskService
 

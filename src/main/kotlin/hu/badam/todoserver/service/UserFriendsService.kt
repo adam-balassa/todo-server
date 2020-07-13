@@ -5,7 +5,9 @@ import hu.badam.todoserver.repository.FriendRepository
 import hu.badam.todoserver.repository.TaskRepository
 import hu.badam.todoserver.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.jpa.repository.Modifying
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
 @Service
@@ -17,6 +19,8 @@ class UserFriendsService {
     @Autowired
     private lateinit var taskRepository: TaskRepository
 
+    @Transactional
+    @Modifying
     fun sendFriendRequest(fromEmail: String, toEmail: String) {
         val from = userRepository.findFirstByEmail(fromEmail) ?: throw IllegalArgumentException("Invalid from email")
         val to = userFriendRepository.findByUser_Email(toEmail) ?: throw IllegalArgumentException("Invalid to email")
@@ -24,6 +28,8 @@ class UserFriendsService {
         userFriendRepository.save(to)
     }
 
+    @Transactional
+    @Modifying
     fun acceptFriendRequest (userEmail: String, requesterEmail: String) {
         val user = userFriendRepository.findByUser_Email(userEmail) ?: throw IllegalArgumentException("Invalid user email")
 
@@ -36,6 +42,8 @@ class UserFriendsService {
         userFriendRepository.save(user)
     }
 
+    @Transactional
+    @Modifying
     fun declineFriendRequest (userEmail: String, requesterEmail: String) {
         val user = userFriendRepository.findByUser_Email(userEmail) ?: throw IllegalArgumentException("Invalid user email")
 
