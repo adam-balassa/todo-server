@@ -5,6 +5,7 @@ import hu.badam.todoserver.security.JwtSecurityConfiguration
 import hu.badam.todoserver.security.TokenAuthenticationService
 import hu.badam.todoserver.service.CourseService
 import hu.badam.todoserver.service.TaskService
+import hu.badam.todoserver.service.UserFriendsService
 import hu.badam.todoserver.service.UserService
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -34,6 +35,9 @@ class TodoServerApplication {
 
 	@Bean
 	fun getCourseService(): CourseService = CourseService()
+
+	@Bean
+	fun getUserFriendsService(): UserFriendsService = UserFriendsService()
 
 	@Bean
 	fun getTokenAuthenticationService(): TokenAuthenticationService = TokenAuthenticationService()

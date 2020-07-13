@@ -53,7 +53,6 @@ class TaskController: ControllerBase() {
         }
     }
 
-
     @DeleteMapping("/tasks/{taskId}")
     @ResponseBody
     fun deleteTask(@PathVariable("taskId") id: Long, auth: Authentication): String {

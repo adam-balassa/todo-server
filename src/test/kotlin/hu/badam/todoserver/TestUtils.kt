@@ -78,6 +78,15 @@ fun User.Companion.of(name: String = "Test User",
     it.password = password
 }
 
+fun UserFriends.Companion.of(user: User,
+                             friends: MutableSet<User> = mutableSetOf(),
+                             friendRequests: MutableSet<User> = mutableSetOf()
+) = UserFriends().also {
+    it.user = user
+    it.friends = friends
+    it.friendRequests = friendRequests
+}
+
 fun Course.Companion.of(name: String = "Test course",
                         owner: User
 ) = Course().also {
@@ -100,10 +109,13 @@ fun assertTaskEquals(task1: Task, task2: Task) {
     assertThat(task1.done).isEqualTo(task2.done)
     assertThat(task1.owner.id).isEqualTo(task2.owner.id)
     assertThat(task1.assigned.map { it.id }).containsExactlyInAnyOrderElementsOf(task2.assigned.map { it.id })
-//    assertThat(task1.assigned).allMatch { assigned1 ->
-//        task2.assigned.any { assigned1.id == it.id }
-//    }
     assertThat(task1.course?.id).isEqualTo(task2.course?.id)
+}
+
+fun assertUserFriendsEquals(u1: UserFriends, u2: UserFriends) {
+    assertThat(u1.user.email).isEqualTo(u2.user.email)
+    assertThat(u1.friendRequests.map { it.email }).containsExactlyInAnyOrderElementsOf(u2.friendRequests.map { it.email })
+    assertThat(u1.friends.map { it.email }).containsExactlyInAnyOrderElementsOf(u2.friends.map { it.email })
 }
 
 fun Date.toISOString(): String {

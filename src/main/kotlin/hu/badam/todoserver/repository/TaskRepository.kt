@@ -26,6 +26,7 @@ interface TaskRepository: JpaRepository<Task, Long>, TaskRepositoryCustom {
 
 interface TaskRepositoryCustom {
     fun findAllFiltered (email: String, from: Date?, course: Long?) : List<Task>
+    fun findAllAssigned(email: String, from: Date?): List<Task>
 }
 
 open class TaskRepositoryImpl: TaskRepositoryCustom {
@@ -37,7 +38,7 @@ open class TaskRepositoryImpl: TaskRepositoryCustom {
     override fun findAllFiltered(email: String, from: Date?, course: Long?): List<Task> {
         val user = userRepository.findFirstByEmail(email) ?: return emptyList()
 
-        val tasks: List<Task> = criteriaQuery(em) { task, cb, cr ->
+        val tasks: List<Task> = criteriaQuery(em) { task, cb ->
             select(task)
             val assigned = task.join<Task, Set<User>>("assigned")
             val userPredicate = cb.or(
@@ -48,6 +49,24 @@ open class TaskRepositoryImpl: TaskRepositoryCustom {
             val coursePredicate = ifNotNull(course, cb) { cb.equal(task.get<Course>("course").get<Long>("id"), course) }
             where(userPredicate, fromPredicate, coursePredicate)
         }
+
+        return tasks.also {
+            for (task in tasks)
+                task.course?.let { it.tasks = null }
+        }
+    }
+
+    override fun findAllAssigned(email: String, from: Date?): List<Task> {
+        val user = userRepository.findFirstByEmail(email) ?: return emptyList()
+
+        val tasks: List<Task> = criteriaQuery(em) { task, cb ->
+            select(task)
+            val assigned = task.join<Task, Set<User>>("assigned")
+            val userPredicate = cb.equal(assigned.get<Long>("id"), user.id)
+            val fromPredicate = ifNotNull(from, cb) { cb.greaterThanOrEqualTo(task.get("endDate"), from) }
+            where(userPredicate, fromPredicate)
+        }
+
         return tasks.also {
             for (task in tasks)
                 task.course?.let { it.tasks = null }

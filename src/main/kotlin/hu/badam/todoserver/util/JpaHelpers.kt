@@ -9,14 +9,14 @@ import javax.persistence.criteria.Root
 
 inline fun <reified ResultT> criteriaQuery(
         em: EntityManager,
-        buildQuery: CriteriaQuery<ResultT>.(root: Root<ResultT>, cb: CriteriaBuilder, cr: CriteriaQuery<ResultT>) -> Unit
+        buildQuery: CriteriaQuery<ResultT>.(root: Root<ResultT>, cb: CriteriaBuilder) -> Unit
 ): List<ResultT> {
 
     val cb = em.criteriaBuilder
     val cr = cb.createQuery(ResultT::class.java)
     val root = cr.from(ResultT::class.java)
 
-    cr.buildQuery(root, cb, cr)
+    cr.buildQuery(root, cb)
 
     val query = em.createQuery(cr)
     return query.resultList

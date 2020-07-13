@@ -2,6 +2,7 @@ package hu.badam.todoserver.service
 
 import hu.badam.todoserver.model.User
 import hu.badam.todoserver.model.UserAuthority
+import hu.badam.todoserver.model.UserFriends
 import hu.badam.todoserver.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -26,7 +27,14 @@ class UserService {
             this.user = user
         }
 
+        val userFriends = UserFriends().apply {
+            this.user = user
+            this.friends = mutableSetOf()
+            this.friendRequests = mutableSetOf()
+        }
+
         userRepository.save(user)
         em.persist(userAuthority)
+        em.persist(userFriends)
     }
 }

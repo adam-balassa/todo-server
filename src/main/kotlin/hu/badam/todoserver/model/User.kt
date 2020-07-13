@@ -50,6 +50,8 @@ class UserAuthority {
 @Entity
 @Table(name = "user_friends")
 class UserFriends {
+    companion object;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     var id: Long? = null
@@ -63,12 +65,12 @@ class UserFriends {
             name = "user_user_friends",
             joinColumns = [JoinColumn(name = "user_id", nullable = false)],
             inverseJoinColumns = [JoinColumn(name = "friend_id", nullable = false)])
-    lateinit var friends: Set<User>
+    lateinit var friends: MutableSet<User>
 
     @ManyToMany (fetch = FetchType.EAGER)
     @JoinTable(
             name = "friend_requests",
             joinColumns = [JoinColumn(name = "user_id", nullable = false)],
             inverseJoinColumns = [JoinColumn(name = "requester_id", nullable = false)])
-    lateinit var friendRequests: Set<User>
+    lateinit var friendRequests: MutableSet<User>
 }
