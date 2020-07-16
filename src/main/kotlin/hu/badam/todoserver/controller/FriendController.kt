@@ -12,12 +12,9 @@ import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @Controller
-class FriendController: ControllerBase() {
+class FriendController(private var friendRepository: FriendRepository,
+                       private var friendsService: UserFriendsService) : ControllerBase() {
 
-    @Autowired
-    private lateinit var friendRepository: FriendRepository
-    @Autowired
-    private lateinit var friendsService: UserFriendsService
 
     @GetMapping("/friends")
     @ResponseBody

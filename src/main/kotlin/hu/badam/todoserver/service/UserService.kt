@@ -11,9 +11,7 @@ import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
 
 @Service
-class UserService {
-    @Autowired
-    private lateinit var userRepository: UserRepository
+class UserService (private val userRepository: UserRepository) {
 
     @PersistenceContext
     private lateinit var em: EntityManager

@@ -19,11 +19,11 @@ import javax.transaction.Transactional
 @AutoConfigureTestEntityManager
 @AutoConfigureDataJpa
 @Transactional
-class TaskRepositoryUnitTest {
-    @Autowired
-    private lateinit var em: TestEntityManager
-    @Autowired
-    private lateinit var taskRepository: TaskRepository
+    class TaskRepositoryUnitTest {
+        @Autowired
+        private lateinit var em: TestEntityManager
+        @Autowired
+        private lateinit var taskRepository: TaskRepository
 
     @Test
     fun testContextLoads() {}

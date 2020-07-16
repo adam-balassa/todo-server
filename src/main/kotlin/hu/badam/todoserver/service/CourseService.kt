@@ -9,11 +9,8 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class CourseService {
-    @Autowired
-    private lateinit var courseRepository: CourseRepository
-    @Autowired
-    private lateinit var taskRepository: TaskRepository
+class CourseService (private val courseRepository: CourseRepository,
+                     private val taskRepository: TaskRepository) {
 
     @Modifying
     @Transactional

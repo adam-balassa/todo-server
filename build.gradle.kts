@@ -49,6 +49,13 @@ dependencies {
 	implementation("io.jsonwebtoken:jjwt-impl:0.10.7")
 	implementation("io.jsonwebtoken:jjwt-jackson:0.10.7")
 
+	implementation ("org.projectlombok:lombok:$lombokVersion")
+	annotationProcessor ("org.projectlombok:lombok:$lombokVersion")
+
+	implementation(group= "org.slf4j", name= "slf4j-api", version= "1.7.2")
+	implementation(group= "org.apache.logging.log4j", name= "log4j-api", version= "2.11.1")
+	implementation(group= "org.apache.logging.log4j", name= "log4j-core", version= "2.11.1")
+
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 //	{
 //		exclude(group = "org.junit.vintage", module = "junit-vintage-engine")

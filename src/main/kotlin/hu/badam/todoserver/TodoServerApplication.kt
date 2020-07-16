@@ -1,5 +1,6 @@
 package hu.badam.todoserver
 
+import hu.badam.todoserver.repository.*
 import hu.badam.todoserver.security.JwtSecurityConfiguration
 import hu.badam.todoserver.security.TokenAuthenticationService
 import hu.badam.todoserver.service.CourseService
@@ -26,28 +27,36 @@ import javax.annotation.PostConstruct
 @Import(ErrorHandler::class, JwtSecurityConfiguration::class)
 class TodoServerApplication {
 
-	@Bean
-	fun getUserService(): UserService = UserService()
+    @Bean
+    fun getUserService(userRepository: UserRepository): UserService = UserService(userRepository)
 
-	@Bean
-	fun getTaskService(): TaskService = TaskService()
+    @Bean
+    fun getTaskService(courseRepository: CourseRepository,
+                       taskRepository: TaskRepository,
+                       deadlineRepository: DeadlineRepository,
+                       userRepository: UserRepository): TaskService
+            = TaskService(taskRepository, courseRepository, deadlineRepository, userRepository)
 
-	@Bean
-	fun getCourseService(): CourseService = CourseService()
+    @Bean
+    fun getCourseService(courseRepository: CourseRepository, taskRepository: TaskRepository): CourseService
+            = CourseService(courseRepository, taskRepository)
 
-	@Bean
-	fun getUserFriendsService(): UserFriendsService = UserFriendsService()
+    @Bean
+    fun getUserFriendsService(taskRepository: TaskRepository,
+                              userFriendRepository: FriendRepository,
+                              userRepository: UserRepository): UserFriendsService
+            = UserFriendsService(userRepository, userFriendRepository, taskRepository)
 
-	@Bean
-	fun getTokenAuthenticationService(): TokenAuthenticationService = TokenAuthenticationService()
+    @Bean
+    fun getTokenAuthenticationService(): TokenAuthenticationService = TokenAuthenticationService()
 
-	@PostConstruct
-	fun init() {
-		TimeZone.setDefault(TimeZone.getTimeZone("Europe/Budapest"))
-	}
+    @PostConstruct
+    fun init() {
+        TimeZone.setDefault(TimeZone.getTimeZone("Europe/Budapest"))
+    }
 }
 
 
 fun main(args: Array<String>) {
-	runApplication<TodoServerApplication>(*args)
+    runApplication<TodoServerApplication>(*args)
 }

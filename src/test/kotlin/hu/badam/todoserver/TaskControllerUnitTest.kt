@@ -55,7 +55,7 @@ class TaskControllerUnitTest {
 	internal class TokenAuthenticationImplConfiguration {
 		@Bean
 		fun getTokenAuthenticationService(): TokenAuthenticationService = object : TokenAuthenticationService() {
-			override fun generateToken(tokenContent: JwtTokenContent, userName: String): String = ""
+			override fun generateToken(tokenContent: JwtTokenContent, userName: org.springframework.security.core.userdetails.User): String = ""
 			override fun getAuthentication(tokenContent: JwtTokenContent, request: HttpServletRequest): Authentication? =
 					UsernamePasswordAuthenticationToken("user@test.com", null, listOf(SimpleGrantedAuthority("USER")))
 		}

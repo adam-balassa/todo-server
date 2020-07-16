@@ -12,13 +12,9 @@ import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 
 @Controller
-class CourseController: ControllerBase() {
+class CourseController (private val courseRepository: CourseRepository,
+                        private val courseService: CourseService): ControllerBase() {
 
-    @Autowired
-    private lateinit var courseRepository: CourseRepository
-
-    @Autowired
-    private lateinit var courseService: CourseService
 
     @GetMapping("/courses")
     @ResponseBody

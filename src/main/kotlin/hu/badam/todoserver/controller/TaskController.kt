@@ -5,6 +5,9 @@ import hu.badam.todoserver.model.UpdatableTask
 import hu.badam.todoserver.model.UploadableTask
 import hu.badam.todoserver.repository.TaskRepository
 import hu.badam.todoserver.service.TaskService
+import lombok.RequiredArgsConstructor
+import lombok.extern.slf4j.Slf4j
+import org.slf4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.format.annotation.DateTimeFormat
@@ -16,18 +19,15 @@ import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @Controller
-class TaskController: ControllerBase() {
-    @Autowired
-    private lateinit var taskRepository: TaskRepository
+class TaskController(private var taskRepository: TaskRepository,
+                     private var taskService: TaskService) : ControllerBase() {
 
-    @Autowired
-    private lateinit var taskService: TaskService
 
     @GetMapping("/tasks")
     @ResponseBody
-    fun getTasks (@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") from: Date?,
-                  @RequestParam course: Long?,
-                  auth: Authentication): List<Task> {
+    fun getTasks(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") from: Date?,
+                 @RequestParam course: Long?,
+                 auth: Authentication): List<Task> {
         return taskRepository.findAllFiltered(auth.email, from, course)
     }
 

@@ -10,13 +10,8 @@ import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 
 @Controller
-class ApiController {
-
-    @Autowired
-    lateinit var passwordEncoder: PasswordEncoder
-
-    @Autowired
-    lateinit var userService: UserService
+class ApiController (private val passwordEncoder: PasswordEncoder,
+                     private val userService: UserService) {
 
     @PostMapping(value = ["/api/register"])
     @ResponseBody

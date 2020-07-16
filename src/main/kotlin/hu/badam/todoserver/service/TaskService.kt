@@ -14,15 +14,12 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class TaskService {
-    @Autowired
-    private lateinit var taskRepository: TaskRepository
-    @Autowired
-    private lateinit var courseRepository: CourseRepository
-    @Autowired
-    private lateinit var deadlineRepository: DeadlineRepository
-    @Autowired
-    private lateinit var userRepository: UserRepository
+class TaskService(
+        private val taskRepository: TaskRepository,
+        private val courseRepository: CourseRepository,
+        private val deadlineRepository: DeadlineRepository,
+        private val userRepository: UserRepository
+) {
 
     @Transactional
     fun save(uploadableTask: UploadableTask): Task {
@@ -36,9 +33,11 @@ class TaskService {
             endDate = uploadableTask.endDate
             priority = uploadableTask.priority
 
-            owner = userRepository.findFirstByEmail(uploadableTask.ownerEmail) ?: throw IllegalArgumentException("Invalid user id")
+            owner = userRepository.findFirstByEmail(uploadableTask.ownerEmail)
+                    ?: throw IllegalArgumentException("Invalid user id")
 
-            assigned = userRepository.findByEmailIn(uploadableTask.assignedUserEmails ?: setOf(uploadableTask.ownerEmail))
+            assigned = userRepository.findByEmailIn(uploadableTask.assignedUserEmails
+                    ?: setOf(uploadableTask.ownerEmail))
 
             course = uploadableTask.courseId?.let {
                 courseRepository.findByIdIfOwned(it, owner.id) ?: throw IllegalArgumentException("Invalid course id")

@@ -11,14 +11,11 @@ import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
 @Service
-class UserFriendsService {
-    @Autowired
-    private lateinit var userRepository: UserRepository
-    @Autowired
-    private lateinit var userFriendRepository: FriendRepository
-    @Autowired
-    private lateinit var taskRepository: TaskRepository
-
+class UserFriendsService(
+        private var userRepository: UserRepository,
+        private var userFriendRepository: FriendRepository,
+        private var taskRepository: TaskRepository
+) {
     @Transactional
     @Modifying
     fun sendFriendRequest(fromEmail: String, toEmail: String) {
@@ -30,13 +27,15 @@ class UserFriendsService {
 
     @Transactional
     @Modifying
-    fun acceptFriendRequest (userEmail: String, requesterEmail: String) {
-        val user = userFriendRepository.findByUser_Email(userEmail) ?: throw IllegalArgumentException("Invalid user email")
+    fun acceptFriendRequest(userEmail: String, requesterEmail: String) {
+        val user = userFriendRepository.findByUser_Email(userEmail)
+                ?: throw IllegalArgumentException("Invalid user email")
 
         val validRequest = user.friendRequests.removeIf { it.email == requesterEmail }
         if (!validRequest) throw java.lang.IllegalArgumentException("This user didn't send a friend request")
 
-        val requester = userRepository.findFirstByEmail(requesterEmail) ?: throw IllegalArgumentException("Invalid requester email")
+        val requester = userRepository.findFirstByEmail(requesterEmail)
+                ?: throw IllegalArgumentException("Invalid requester email")
         user.friends.add(requester)
 
         userFriendRepository.save(user)
@@ -44,8 +43,9 @@ class UserFriendsService {
 
     @Transactional
     @Modifying
-    fun declineFriendRequest (userEmail: String, requesterEmail: String) {
-        val user = userFriendRepository.findByUser_Email(userEmail) ?: throw IllegalArgumentException("Invalid user email")
+    fun declineFriendRequest(userEmail: String, requesterEmail: String) {
+        val user = userFriendRepository.findByUser_Email(userEmail)
+                ?: throw IllegalArgumentException("Invalid user email")
 
         val validRequest = user.friendRequests.removeIf { it.email == requesterEmail }
         if (!validRequest) throw java.lang.IllegalArgumentException("This user didn't send a friend request")
@@ -55,7 +55,8 @@ class UserFriendsService {
 
     fun getTasks(email: String, friend: String, from: Date?): List<Task> {
         val user = userFriendRepository.findByUser_Email(email) ?: throw IllegalArgumentException("Invalid user email")
-        user.friends.find { it.email == friend } ?: throw IllegalArgumentException("The requested user does not your friend")
+        user.friends.find { it.email == friend }
+                ?: throw IllegalArgumentException("The requested user does not your friend")
         return taskRepository.findAllAssigned(friend, from)
     }
 }

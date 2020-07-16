@@ -29,9 +29,7 @@ interface TaskRepositoryCustom {
     fun findAllAssigned(email: String, from: Date?): List<Task>
 }
 
-open class TaskRepositoryImpl: TaskRepositoryCustom {
-    @Autowired
-    private lateinit var userRepository: UserRepository
+open class TaskRepositoryImpl (private val userRepository: UserRepository): TaskRepositoryCustom {
     @PersistenceContext
     private lateinit var em: EntityManager
 

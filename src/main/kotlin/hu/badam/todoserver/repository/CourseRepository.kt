@@ -24,13 +24,8 @@ interface CourseRepositoryCustom {
     fun update(updatableCourse: UpdatableCourse, email: String): Course
 }
 
-open class CourseRepositoryImpl: CourseRepositoryCustom {
-    @Autowired
-    private lateinit var courseRepository: CourseRepository
-
-    @Autowired
-    private lateinit var userRepository: UserRepository
-
+open class CourseRepositoryImpl (private val courseRepository: CourseRepository,
+                                 private val userRepository: UserRepository): CourseRepositoryCustom {
     @Transactional
     override fun save(uploadableCourse: UploadableCourse): Course {
         val course = Course().apply {
